@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: ${APP:instructor-api}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://pool-infra-eureka-server:8761/eureka/
