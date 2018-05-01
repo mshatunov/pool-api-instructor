@@ -6,34 +6,37 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class InstructorController {
 
+    public static final String INSTRUCTOR_ID = "{instructorId}";
+    public static final String INSTRUCTOR_PATH = "instructorId";
+
     private final InstructorRepository repository;
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<String> createInstructor(@RequestBody Instructor instructor) {
-        return repository.insert(instructor).map(Instructor::getId);
+    public String createInstructor(@RequestBody Instructor instructor) {
+        return repository.insert(instructor).map(Instructor::getId).block();
     }
 
     @GetMapping
-    public Flux<Instructor> getInstructors() {
-        return repository.findAll();
+    public List<Instructor> getInstructors() {
+        return repository.findAll().collectList().block();
     }
 
-    @GetMapping("/{id}")
-    public Mono<Instructor> getInstructor(@PathVariable("id") String id) {
-        return repository.findById(id);
+    @GetMapping(INSTRUCTOR_ID)
+    public Instructor getInstructor(@PathVariable(INSTRUCTOR_PATH) String id) {
+        return repository.findById(id).block();
     }
 
-    @DeleteMapping("/{id}")
-    public Mono<Void> deleteInstructor(@PathVariable("id") String id) {
-        return repository.deleteById(id);
+    @DeleteMapping(INSTRUCTOR_ID)
+    public void deleteInstructor(@PathVariable(INSTRUCTOR_PATH) String id) {
+        repository.deleteById(id).block();
     }
 
 }
