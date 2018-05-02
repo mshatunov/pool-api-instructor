@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InstructorController {
 
-    public static final String INSTRUCTOR_ID = "{instructorId}";
+    public static final String INSTRUCTOR_ID = "/{instructorId}";
     public static final String INSTRUCTOR_PATH = "instructorId";
 
     private final InstructorRepository repository;

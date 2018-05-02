@@ -1,7 +1,9 @@
 package com.mshatunov.pool.api.instructor.controller
 
 import com.mshatunov.pool.api.instructor.BaseIntegrationTest
+import com.mshatunov.pool.api.instructor.model.Instructor
 import com.mshatunov.pool.api.instructor.model.TimetableEntry
+import com.mshatunov.pool.api.instructor.repository.InstructorRepository
 import com.mshatunov.pool.api.instructor.repository.TimetableRepository
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDate
 
 import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertNull
 
 class TimetableControllerTest extends BaseIntegrationTest {
     public static final String INSTRUCTOR_1 = 'instructor1'
@@ -43,11 +46,15 @@ class TimetableControllerTest extends BaseIntegrationTest {
     TimetableRepository repository
 
     @Autowired
+    InstructorRepository instructorRepository
+
+    @Autowired
     TimetableController controller
 
     @AfterEach
     void 'clear database'() {
         repository.deleteAll().block()
+        instructorRepository.deleteAll().block()
     }
 
     @Test
@@ -67,5 +74,28 @@ class TimetableControllerTest extends BaseIntegrationTest {
         def timetable = controller.getInstructorTimetable(INSTRUCTOR_1, true)
         assertEquals(1, timetable.size())
         assertEquals(ID_2, timetable.get(0).getId())
+    }
+
+    @Test
+    void 'successfully get instructor by pool, tub and date'() {
+        repository.insert(TE_1).block()
+
+        def instructor = Instructor.builder()
+                .id(INSTRUCTOR_1)
+                .name('John')
+                .lastName('Dow')
+                .build()
+        instructorRepository.insert(instructor).block()
+
+        def response = controller.getInstructorByPoolAndDate(POOL_1, TUB_1, DATE_1)
+        assertEquals(instructor, response)
+    }
+
+    @Test
+    void 'get null, if there is no instructor in pool in that date'() {
+        repository.insert(TE_1).block()
+
+        def response = controller.getInstructorByPoolAndDate(POOL_1, TUB_1, DATE_1)
+        assertNull(response)
     }
 }
