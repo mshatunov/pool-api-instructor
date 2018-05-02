@@ -51,6 +51,8 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('de.flapdoodle.embed:de.flapdoodle.embed.mongo')
     testCompile('io.projectreactor:reactor-test')
+    testCompile 'org.junit.jupiter:junit-jupiter-engine'
+    testCompile 'org.codehaus.groovy:groovy-all:2.4.15'
 }
 
 dependencyManagement {
