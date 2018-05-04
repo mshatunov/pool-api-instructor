@@ -1,5 +1,6 @@
 package com.mshatunov.pool.api.instructor.service;
 
+import com.mshatunov.pool.api.instructor.controller.dto.AddTimetableEntryRequest;
 import com.mshatunov.pool.api.instructor.model.Instructor;
 import com.mshatunov.pool.api.instructor.model.TimetableEntry;
 import com.mshatunov.pool.api.instructor.repository.InstructorRepository;
@@ -26,9 +27,8 @@ public class TimetableServiceImpl implements TimetableService {
 
     @Override
     public Mono<Instructor> getInstructorByPoolAndDate(String poolId, String tubId, LocalDate date) {
-        String instructorId = timetableRepository.findByPoolIdAndTubIdAndDate(poolId, tubId, date)
-                .map(TimetableEntry::getInstructorId)
-                .block();
+        Mono<String> instructorId = timetableRepository.findByPoolIdAndTubIdAndDate(poolId, tubId, date)
+                .map(TimetableEntry::getInstructorId);
         return instructorRepository.findById(instructorId);
     }
 }

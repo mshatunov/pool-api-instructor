@@ -32,16 +32,16 @@ public class TimetableController {
     private final TimetableService service;
 
     @GetMapping(INSTRUCTOR_ID)
-    public List<TimetableEntry> getInstructorTimetable(@PathVariable(INSTRUCTOR_PATH) String instructorId,
-                                                       @RequestParam boolean showOnlyFutureEntries) {
-        return service.getInstructorTimetable(instructorId, showOnlyFutureEntries).collectList().block();
+    public Flux<TimetableEntry> getInstructorTimetable(@PathVariable(INSTRUCTOR_PATH) String instructorId,
+                                                       @RequestParam(defaultValue = "true") boolean showOnlyFutureEntries) {
+        return service.getInstructorTimetable(instructorId, showOnlyFutureEntries);
     }
 
     @GetMapping(POOL_ID + TUB_ID + DATE)
-    public Instructor getInstructorByPoolAndDate(@PathVariable(POOL_PATH) String poolId,
-                                                 @PathVariable(TUB_PATH) String tubId,
-                                                 @PathVariable(DATE_PATH) LocalDate date) {
-        return service.getInstructorByPoolAndDate(poolId, tubId, date).block();
+    public Mono<Instructor> getInstructorTimetableByPoolAndDate(@PathVariable(POOL_PATH) String poolId,
+                                                                @PathVariable(TUB_PATH) String tubId,
+                                                                @PathVariable(DATE_PATH) String date) {
+        return service.getInstructorByPoolAndDate(poolId, tubId, LocalDate.parse(date));
     }
 
 }
