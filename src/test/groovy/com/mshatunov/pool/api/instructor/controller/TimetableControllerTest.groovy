@@ -2,6 +2,7 @@ package com.mshatunov.pool.api.instructor.controller
 
 import com.mshatunov.pool.api.instructor.BaseIntegrationTest
 import com.mshatunov.pool.api.instructor.controller.dto.AddTimetableEntryRequest
+import com.mshatunov.pool.api.instructor.exception.DateAlreadyOccupiedException
 import com.mshatunov.pool.api.instructor.model.Instructor
 import com.mshatunov.pool.api.instructor.model.TimetableEntry
 import com.mshatunov.pool.api.instructor.repository.InstructorRepository
@@ -41,6 +42,12 @@ class TimetableControllerTest extends BaseIntegrationTest {
             .date(DATE_2)
             .poolId(POOL_1)
             .tubId(TUB_1)
+            .build()
+
+    public static final AddTimetableEntryRequest ADD_TE_REQUEST = AddTimetableEntryRequest.builder()
+            .poolId(POOL_1)
+            .tubId(TUB_1)
+            .date(DATE_1)
             .build()
 
     @Autowired
@@ -102,13 +109,15 @@ class TimetableControllerTest extends BaseIntegrationTest {
 
     @Test
     void 'successfully save timetable entry'() {
-        AddTimetableEntryRequest request = AddTimetableEntryRequest.builder()
-                .poolId(POOL_1)
-                .tubId(TUB_1)
-                .date(DATE_1)
-                .build()
-
-        def response = controller.addInstructorTimetableEntry(INSTRUCTOR_1, request).block()
+        def response = controller.addInstructorTimetableEntry(INSTRUCTOR_1, ADD_TE_REQUEST).block()
         assertTrue(StringUtils.isNotBlank(response.getId()))
+    }
+
+    @Test
+    void 'throw exception if date is already occupied'() {
+        controller.addInstructorTimetableEntry(INSTRUCTOR_1, ADD_TE_REQUEST).block()
+        assertThrows(DateAlreadyOccupiedException.class, { ->
+            controller.addInstructorTimetableEntry(INSTRUCTOR_1, ADD_TE_REQUEST).block()
+        })
     }
 }
