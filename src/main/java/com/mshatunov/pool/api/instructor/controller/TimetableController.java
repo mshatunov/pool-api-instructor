@@ -1,13 +1,15 @@
 package com.mshatunov.pool.api.instructor.controller;
 
+import com.mshatunov.pool.api.instructor.controller.dto.AddTimetableEntryRequest;
 import com.mshatunov.pool.api.instructor.model.Instructor;
 import com.mshatunov.pool.api.instructor.model.TimetableEntry;
 import com.mshatunov.pool.api.instructor.service.TimetableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import static com.mshatunov.pool.api.instructor.controller.InstructorController.INSTRUCTOR_ID;
 import static com.mshatunov.pool.api.instructor.controller.InstructorController.INSTRUCTOR_PATH;
@@ -35,6 +37,12 @@ public class TimetableController {
     public Flux<TimetableEntry> getInstructorTimetable(@PathVariable(INSTRUCTOR_PATH) String instructorId,
                                                        @RequestParam(defaultValue = "true") boolean showOnlyFutureEntries) {
         return service.getInstructorTimetable(instructorId, showOnlyFutureEntries);
+    }
+
+    @PostMapping(INSTRUCTOR_ID)
+    public Mono<TimetableEntry> addInstructorTimetableEntry(@PathVariable(INSTRUCTOR_PATH) String instructorId,
+                                                            @RequestBody AddTimetableEntryRequest request) {
+        return service.addInstructorTimetableEntry(instructorId, request);
     }
 
     @GetMapping(POOL_ID + TUB_ID + DATE)

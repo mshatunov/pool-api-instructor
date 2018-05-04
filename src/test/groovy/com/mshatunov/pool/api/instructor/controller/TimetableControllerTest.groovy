@@ -1,12 +1,14 @@
 package com.mshatunov.pool.api.instructor.controller
 
 import com.mshatunov.pool.api.instructor.BaseIntegrationTest
+import com.mshatunov.pool.api.instructor.controller.dto.AddTimetableEntryRequest
 import com.mshatunov.pool.api.instructor.model.Instructor
 import com.mshatunov.pool.api.instructor.model.TimetableEntry
 import com.mshatunov.pool.api.instructor.repository.InstructorRepository
 import com.mshatunov.pool.api.instructor.repository.TimetableRepository
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
+import org.junit.platform.commons.util.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 
 import java.time.LocalDate
@@ -96,5 +98,17 @@ class TimetableControllerTest extends BaseIntegrationTest {
 
         def response = controller.getInstructorTimetableByPoolAndDate(POOL_1, TUB_1, DATE_1.toString()).block()
         assertNull(response)
+    }
+
+    @Test
+    void 'successfully save timetable entry'() {
+        AddTimetableEntryRequest request = AddTimetableEntryRequest.builder()
+                .poolId(POOL_1)
+                .tubId(TUB_1)
+                .date(DATE_1)
+                .build()
+
+        def response = controller.addInstructorTimetableEntry(INSTRUCTOR_1, request).block()
+        assertTrue(StringUtils.isNotBlank(response.getId()))
     }
 }

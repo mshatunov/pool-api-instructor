@@ -31,4 +31,14 @@ public class TimetableServiceImpl implements TimetableService {
                 .map(TimetableEntry::getInstructorId);
         return instructorRepository.findById(instructorId);
     }
+
+    @Override
+    public Mono<TimetableEntry> addInstructorTimetableEntry(String instructorId, AddTimetableEntryRequest request) {
+        return timetableRepository.insert(TimetableEntry.builder()
+                .instructorId(instructorId)
+                .poolId(request.getPoolId())
+                .tubId(request.getTubId())
+                .date(request.getDate())
+                .build());
+    }
 }
