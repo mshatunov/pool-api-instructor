@@ -32,7 +32,7 @@ repositories {
 
 
 ext {
-    springCloudVersion = 'Finchley.M9'
+    springCloudVersion = 'Finchley.SR1'
 }
 
 dependencies {
