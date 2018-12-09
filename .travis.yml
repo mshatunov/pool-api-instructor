@@ -1,4 +1,0 @@
-sudo: required
-language: java
-script:
-  - ./gradlew final -Prelease.scope=patch dockerPushImage
