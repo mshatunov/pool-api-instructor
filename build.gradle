@@ -65,7 +65,7 @@ docker {
     }
 
     springBootApplication {
-        url = 'registry.hub.docker.com'
+        url = 'https://index.docker.io/v1/'
         baseImage = 'frolvlad/alpine-oraclejdk8:slim'
         tag = "mshatunov/${rootProject.name}:${version}"
     }
