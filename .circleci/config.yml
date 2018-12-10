@@ -9,4 +9,13 @@ jobs:
       - run:
           name: maven build
           command: |
-            ./gradlew final -Prelease.useLastTag=true dockerPushImage
+            ./gradlew final -Prelease.scope=patch dockerPushImage
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
