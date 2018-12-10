@@ -60,8 +60,6 @@ dependencyManagement {
 
 docker {
     registryCredentials {
-        url = System.env.DOCKER_HOST
-        certPath = new File(System.env.DOCKER_CERT_PATH)
         username = project.hasProperty('dockerUser') ? dockerUser : System.getenv('dockerUser')
         password = project.hasProperty('dockerPassword') ? dockerPassword : System.getenv('dockerPassword')
     }
