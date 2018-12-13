@@ -10,13 +10,11 @@ jobs:
       - run:
           name: maven build
           command: |
-            ./gradlew final -Prelease.scope=patch dockerPushImage
-
-workflows:
-  version: 2
-  workflow:
-    jobs:
-      - build:
-          filters:
-            branches:
-              only: master
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              ./gradlew final -Prelease.scope=patch
+            else
+              ./gradlew snapshot -Prelease.scope=patch
+            fi
+      - deploy:
+          command: |
+            ./gradlew dockerPushImage
