@@ -14,9 +14,6 @@ jobs:
               ./gradlew final -Prelease.scope=patch
             else
               ./gradlew snapshot -Prelease.scope=patch
-              echo "${version}"
-              echo "${version}" + "-dev-" + "CIRCLE_BUILD_NUM"
-              version = "${version}" + "-dev-" + "CIRCLE_BUILD_NUM"
             fi
       - deploy:
           command: |
