@@ -11,8 +11,7 @@ jobs:
           name: nebula release task and push docker image
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              ./gradlew final -Prelease.scope=patch
+              ./gradlew final -Prelease.scope=patch dockerPushImage
             else
-              ./gradlew snapshot -Prelease.scope=patch
+              ./gradlew snapshot -Prelease.scope=patch dockerPushImage
             fi
-            ./gradlew dockerPushImage
