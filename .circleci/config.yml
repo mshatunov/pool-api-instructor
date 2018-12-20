@@ -8,14 +8,11 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: nebula release task
+          name: nebula release task and push docker image
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               ./gradlew final -Prelease.scope=patch
             else
               ./gradlew snapshot -Prelease.scope=patch
             fi
-      - deploy:
-          name: push docker image
-          command: |
             ./gradlew dockerPushImage
