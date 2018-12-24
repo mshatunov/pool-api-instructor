@@ -49,7 +49,7 @@ dependencies {
     testCompile('de.flapdoodle.embed:de.flapdoodle.embed.mongo')
     testCompile('io.projectreactor:reactor-test')
     testCompile 'org.junit.jupiter:junit-jupiter-engine'
-    testCompile 'org.codehaus.groovy:groovy-all:2.5.4'
+    testCompile 'org.codehaus.groovy:groovy-all:2.5.5'
 }
 
 dependencyManagement {
