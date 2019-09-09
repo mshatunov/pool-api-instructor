@@ -14,7 +14,7 @@ buildscript {
 
 plugins {
     id 'net.ltgt.apt' version '0.19'
-    id 'nebula.release' version '6.3.5'
+    id 'nebula.release' version '11.1.2'
 }
 
 apply plugin: 'java'
